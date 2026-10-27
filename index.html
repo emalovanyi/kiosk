@@ -113,10 +113,10 @@ body{background:var(--stage-bg);color:var(--stage-ink);font-family:-apple-system
 /* Enter */
 .enter{align-items:center;text-align:center;padding:20px 44px 32px}
 .enter .title{max-width:420px}
-.field{margin-top:26px;width:100%;background:var(--surface);border-radius:22px;padding:16px 60px 18px;position:relative;transition:box-shadow .2s;flex:none}
+.field{margin-top:26px;width:100%;background:var(--surface);border-radius:22px;padding:22px 60px;position:relative;transition:box-shadow .2s;flex:none}
 .field.err{box-shadow:0 0 0 2px var(--red)}
 .f-label{font-size:15px;color:var(--ink2);font-weight:500;height:20px}
-.f-value{font-size:40px;font-weight:600;margin-top:6px;height:50px;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.f-value{font-size:40px;font-weight:600;height:50px;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;white-space:nowrap}
 .f-value.long{font-size:32px}
 .sheet .f-value.long{font-size:30px}
 .f-value .ph{color:#C7C7CC;font-weight:500}
@@ -298,10 +298,6 @@ body{background:var(--stage-bg);color:var(--stage-ink);font-family:-apple-system
           </div>
           <h1 class="display" data-t="welcome_title"></h1>
           <p class="lead" data-t="welcome_lead"></p>
-          <div class="steps">
-            <div class="step"><i><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="5" r="1.8"/><circle cx="12" cy="5" r="1.8"/><circle cx="18" cy="5" r="1.8"/><circle cx="6" cy="11" r="1.8"/><circle cx="12" cy="11" r="1.8"/><circle cx="18" cy="11" r="1.8"/><circle cx="6" cy="17" r="1.8"/><circle cx="12" cy="17" r="1.8"/><circle cx="18" cy="17" r="1.8"/></svg></i><span data-t="step1"></span></div>
-            <div class="step"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M4.5 8h15l-1.2 12.2a1 1 0 0 1-1 .8H6.7a1 1 0 0 1-1-.8z"/><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10"/></svg></i><span data-t="step3"></span></div>
-          </div>
           <div class="spacer"></div>
           <button class="btn btn-primary" id="startBtn" data-t="start"></button>
           <p class="cash-note" data-t="cash_note"></p>
@@ -311,7 +307,6 @@ body{background:var(--stage-bg);color:var(--stage-ink);font-family:-apple-system
         <section class="screen enter" data-screen="enter">
           <h2 class="title" data-t="enter_title"></h2>
           <div class="field" id="enterField">
-            <div class="f-label" id="enterLabel"></div>
             <div class="f-value" id="enterValue"></div>
             <button class="f-clear" id="enterClear" aria-label="Vymazať"><svg viewBox="0 0 16 16"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
           </div>
@@ -368,7 +363,6 @@ body{background:var(--stage-bg);color:var(--stage-ink);font-family:-apple-system
             <button class="x-btn" id="sheetClose" aria-label="Zavrieť"><svg viewBox="0 0 16 16"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
           </div>
           <div class="field" id="sheetField">
-            <div class="f-label" id="sheetLabel"></div>
             <div class="f-value" id="sheetValue"></div>
             <button class="f-clear" id="sheetClear" aria-label="Vymazať"><svg viewBox="0 0 16 16"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
           </div>
@@ -674,7 +668,6 @@ function renderStatic() {
 
 function renderField(which) {
   const st = state[which], p = which === 'main' ? 'enter' : 'sheet';
-  $('#' + p + 'Label').textContent = t('label_' + typeOf(st.val));
   $('#' + p + 'Value').innerHTML = st.val
     ? `<span>${fmt(st.val)}</span><span class="caret"></span>`
     : `<span class="caret"></span><span class="ph">${t('placeholder')}</span>`;
@@ -701,6 +694,7 @@ function renderList() {
     </button>`;
   }).join('');
   state.newIds = [];
+  $('#addBtn').style.display = state.mode === 'order' ? '' : 'none';
   const n = selected().length, d = due();
   $('#sum').innerHTML = !n ? `<span>${t('none_sel')}</span>`
     : d > 0 ? `<span>${t('due')}</span><strong>${money(d)}</strong>`
